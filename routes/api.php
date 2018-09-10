@@ -12,7 +12,25 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/', [
+    'uses' => 'MeetingController@index'
+]);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'], function(){
+    Route::resource('meeting', 'MeetingController', [
+        'except' => ['edit', 'create']
+    ]);
+
+    Route::resource('meeting/registeration', 'RegisterationController', [
+        'only' => ['store', 'destroy']
+    ]);
+
+    Route::post('user', [
+        'uses' => 'AuthController@store'
+    ]);
+
+    Route::post('user/signin', [
+        'uses' => 'AuthController@signin'
+    ]);
 });
+
