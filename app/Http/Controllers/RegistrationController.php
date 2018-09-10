@@ -15,9 +15,23 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'meeting_id' => 'required',
+            'user_id' => 'required'
+        ]);
         $meeting_id = $request->input("meeting_id");
         $user_id = $request->input("user_id");
-        return "It works";
+
+        $meeting = [
+            'title' => 'Title',
+            'description' => 'Description',
+            'time' => 'Time',
+            'view_meeting' => [
+                'href' => 'api/v1/meeting/1',
+                'method' => 'GET'
+            ]
+        ];
+        return response()->json($meeting, 200);
     }
 
     /**
