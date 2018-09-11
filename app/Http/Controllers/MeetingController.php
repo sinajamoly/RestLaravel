@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Meeting;
 use Illuminate\Http\Request;
 
 class MeetingController extends Controller
@@ -17,22 +18,16 @@ class MeetingController extends Controller
      */
     public function index()
     {
-        $meeting = [
-            'title' => 'Title',
-            'description' => 'Description',
-            'time' => 'Time',
-            'user_id' => 'User_id',
-            'view_meeting' => [
-                'href' => 'api/v1/meeting/1',
+        $meetings = Meeting::all();
+        foreach ($meetings as $meeting) {
+            $meeting->view_meeting = [
+                'href' => 'api/v1/meeting/'. $meeting->id,
                 'method' => 'GET'
-            ]
-        ];
+            ];
+        }
         $response = [
             'msg' => 'List of All Meeting',
-            'meetings' => [
-                $meeting,
-                $meeting
-            ]
+            'meetings' => $meetings
         ];
 
         return response()->json($response, 201);
